@@ -1752,6 +1752,9 @@
             const pw = window.open('', 'presenter', 'width=720,height=850');
             if (!pw) { alert('Please allow popups for this page to open Presenter View.'); return; }
 
+            // Hide the nav bar on the main slide window
+            document.getElementById('navBar').classList.add('hidden');
+
             pw.document.write(`<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><title>Presenter View</title>
 <style>
