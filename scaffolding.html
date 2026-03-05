@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Scaffolding Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e4e4ef;
+            padding: 2rem;
+            line-height: 1.7;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        h2 {
+            font-size: 1.4rem; font-weight: 700; margin: 3rem 0 1rem;
+            padding: 0.75rem 1rem; background: #12121a; border-left: 4px solid #6c8cff;
+            border-radius: 0 8px 8px 0;
+        }
+        h3 { font-size: 1.1rem; font-weight: 600; margin: 2rem 0 0.75rem; color: #a78bfa; }
+        h4 { font-size: 0.95rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: #34d399; }
+        p { color: #8888a0; margin-bottom: 0.75rem; font-size: 0.92rem; }
+        .subtitle { color: #5a5a70; font-size: 0.9rem; margin-bottom: 2.5rem; }
+        strong { color: #e4e4ef; }
+        table {
+            width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem;
+            font-size: 0.85rem; background: #12121a; border-radius: 8px; overflow: hidden;
+        }
+        th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid #1e1e2e; }
+        th { background: #1a1a26; font-weight: 600; color: #e4e4ef; }
+        td { color: #8888a0; }
+        tr:last-child td { border-bottom: none; }
+        ul, ol { padding-left: 1.25rem; margin: 0.5rem 0 1rem; }
+        li { color: #8888a0; font-size: 0.9rem; margin-bottom: 0.35rem; }
+        pre {
+            background: #12121a; border: 1px solid #2a2a3a; border-radius: 8px;
+            padding: 1.25rem; overflow-x: auto; margin: 0.75rem 0;
+            font-family: 'Fira Code', monospace; font-size: 0.82rem; color: #b0b0cc;
+        }
+        .toc {
+            background: #12121a; border: 1px solid #2a2a3a; border-radius: 8px;
+            padding: 1.5rem; margin: 1.5rem 0;
+        }
+        .toc a {
+            color: #6c8cff; text-decoration: none; display: block;
+            padding: 0.3rem 0; font-size: 0.9rem;
+        }
+        .toc a:hover { text-decoration: underline; }
+        .divider { border: none; border-top: 1px solid #2a2a3a; margin: 2rem 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1>Digital Solutions IA1 &mdash; Technical Proposal</h1>
+<p class="subtitle">BCC Events Finder: A Web Application for Brisbane City Council Event Venues</p>
+
+<div class="toc">
+    <strong style="font-size:0.85rem; color:#5a5a70; text-transform:uppercase; letter-spacing:0.08em;">Contents</strong>
+    <a href="#s1">1. Introduction</a>
+    <a href="#s2">2. User Story</a>
+    <a href="#s3">3. Data Story</a>
+    <a href="#s4">4. Proposed Solution</a>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<h2 id="s1">1. Introduction</h2>
+
+<p>This technical proposal presents the design of <strong>BCC Events Finder</strong>, a purpose-built web application that transforms the Brisbane City Council Events Locations dataset into an accessible, user-friendly venue discovery platform. While BCC publishes comprehensive venue data through their Open Data Portal, this information is presented in a raw, technical format inaccessible to everyday residents and visitors.</p>
+
+<h3>Constraints</h3>
+<table>
+    <tr><th>Type</th><th>Detail</th></tr>
+    <tr><td>Time</td><td>~15 hours of class time; due 06/03/2026; draft by Term 1 Week 4</td></tr>
+    <tr><td>Data</td><td>CSV/Excel format, 1,696 records, 8 columns, static venue locations only</td></tr>
+    <tr><td>Legal</td><td>CC BY 4.0 licence; Australian Privacy Act compliance for admin accounts</td></tr>
+</table>
+
+<h3>Prescribed Criteria</h3>
+<ul>
+    <li>Web application format</li>
+    <li>Access and filter BCC Events Locations dataset</li>
+    <li>Present data in an easy-to-understand format</li>
+    <li>Allow effective searching of the dataset</li>
+    <li>Include administrative privileges where relevant</li>
+    <li>Multimodal presentation for a technical audience</li>
+</ul>
+
+<h3>Self-Determined Criteria</h3>
+<table>
+    <tr><th>Impact</th><th>Criteria</th></tr>
+    <tr><td>Personal</td><td>Empower individual residents to discover local community venues, encouraging participation in local events</td></tr>
+    <tr><td>Social</td><td>Promote social inclusion and community connectedness; accessibility features ensure all users can access information</td></tr>
+    <tr><td>Economic</td><td>Boost local economic activity by driving foot traffic to venues; help tourists find attractions, benefiting local businesses</td></tr>
+</table>
+
+<hr class="divider">
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<h2 id="s2">2. User Story</h2>
+
+<h3>2.1 Description of Web Application</h3>
+<p><strong>BCC Events Finder</strong> provides Brisbane residents and visitors with an intuitive way to discover, search, and filter the 1,696 event venue locations maintained by Brisbane City Council.</p>
+
+<h4>Public User Features</h4>
+<ul>
+    <li>Home page with prominent search bar and quick venue type filter buttons</li>
+    <li>Browse/search page with sidebar filters (suburb dropdown, venue type checkboxes), sort options, paginated results</li>
+    <li>Venue detail page with address, type, suburb, map placeholder with GPS coordinates</li>
+    <li>Related venues section showing other venues in the same suburb</li>
+</ul>
+
+<h4>Admin Features</h4>
+<ul>
+    <li>Secure login with hashed password authentication</li>
+    <li>Dashboard with statistics and searchable venue management table</li>
+    <li>Add/Edit venue form with all data fields</li>
+    <li>Delete venue with confirmation prompt</li>
+</ul>
+
+<h4>Software Stack</h4>
+<table>
+    <tr><th>Component</th><th>Technology</th><th>Justification</th></tr>
+    <tr><td>Frontend</td><td>HTML, CSS, JavaScript</td><td>Standard web technologies; accessible in all browsers</td></tr>
+    <tr><td>Backend</td><td>Python (Flask)</td><td>Lightweight framework; widely taught in Digital Solutions</td></tr>
+    <tr><td>Database</td><td>SQLite</td><td>File-based relational DB; no server setup; ideal for dataset size</td></tr>
+    <tr><td>Mapping</td><td>Leaflet.js</td><td>Open-source; compatible with lat/long coordinate data</td></tr>
+</table>
+
+<h3>2.2 Existing Solution</h3>
+<p>The <strong>Brisbane City Council Open Data Portal</strong> (data.brisbane.qld.gov.au) is the existing solution. Powered by Opendatasoft, it hosts 384+ datasets including the Events Locations dataset. It provides table view, map view, analyse view, and export/API access.</p>
+
+<h4>Key Pros</h4>
+<ol>
+    <li>Comprehensive raw data access in multiple formats (CSV, JSON, Excel, GeoJSON)</li>
+    <li>API access for developers via Opendatasoft Explore API</li>
+    <li>Geographic visualisation with interactive Leaflet.js map</li>
+    <li>Open licence (CC BY 4.0) allows free reuse</li>
+    <li>Daily updates from Trumba Calendar API</li>
+</ol>
+
+<h4>Key Cons</h4>
+<ol>
+    <li>Not designed for general public &mdash; it's a data catalogue for developers</li>
+    <li>No suburb-based browsing or friendly location search</li>
+    <li>No visual venue type filtering (raw field values only)</li>
+    <li>No integration between location and event datasets</li>
+    <li>Raw data presentation with coordinates and field names</li>
+    <li>No personalisation, favourites, or recommendations</li>
+    <li>Poor mobile experience &mdash; desktop-focused design</li>
+    <li>No proximity/distance search</li>
+    <li>Overwhelming technical interface for non-technical users</li>
+    <li>Limited to 1,000&ndash;2,000 events due to API cap</li>
+</ol>
+
+<hr class="divider">
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<h2 id="s3">3. Data Story</h2>
+
+<h3>3.1 Sample Data</h3>
+<table>
+    <tr><th>Property</th><th>Detail</th></tr>
+    <tr><td>Source</td><td>Brisbane City Council Open Data Portal (data.brisbane.qld.gov.au)</td></tr>
+    <tr><td>File Format</td><td>CSV / Excel (.xlsx)</td></tr>
+    <tr><td>Licence</td><td>Creative Commons Attribution 4.0 (CC BY 4.0)</td></tr>
+    <tr><td>Records</td><td>1,696 venue locations</td></tr>
+    <tr><td>Columns</td><td>8 fields</td></tr>
+    <tr><td>Suburbs</td><td>186 unique</td></tr>
+    <tr><td>Venue Types</td><td>10 categories</td></tr>
+    <tr><td>Accessibility</td><td>Publicly available; no authentication required</td></tr>
+    <tr><td>Security</td><td>Read-only public data; admin features use hashed passwords</td></tr>
+</table>
+
+<h4>Sample Records</h4>
+<table>
+    <tr><th>Venue Name</th><th>Venue Type</th><th>Suburb</th><th>Lat</th><th>Long</th></tr>
+    <tr><td>Grow for Life Garden</td><td>Community Garden, Non-Council</td><td>Upper Mt Gravatt</td><td>-27.544</td><td>153.089</td></tr>
+    <tr><td>7th Brigade Park</td><td>Park</td><td>Chermside</td><td>-27.379</td><td>153.030</td></tr>
+    <tr><td>A.J. Jones Recreation Reserve</td><td>Park</td><td>Greenslopes</td><td>-27.503</td><td>153.044</td></tr>
+    <tr><td>Acacia Ridge Hall</td><td>Community Hall</td><td>Acacia Ridge</td><td>-27.587</td><td>153.026</td></tr>
+    <tr><td>Zillmere Library</td><td>Library</td><td>Zillmere</td><td>-27.360</td><td>153.041</td></tr>
+</table>
+
+<h3>3.2 Data Dictionary (5 Normalised Tables)</h3>
+
+<h4>Suburbs Table (186 records)</h4>
+<table>
+    <tr><th>Field</th><th>Type</th><th>Constraints</th></tr>
+    <tr><td>SuburbID</td><td>INT</td><td>PRIMARY KEY, AUTO_INCREMENT</td></tr>
+    <tr><td>SuburbName</td><td>VARCHAR(50)</td><td>NOT NULL, UNIQUE</td></tr>
+</table>
+
+<h4>VenueTypes Table (10 records)</h4>
+<table>
+    <tr><th>Field</th><th>Type</th><th>Constraints</th></tr>
+    <tr><td>TypeID</td><td>INT</td><td>PRIMARY KEY, AUTO_INCREMENT</td></tr>
+    <tr><td>TypeName</td><td>VARCHAR(50)</td><td>NOT NULL, UNIQUE</td></tr>
+</table>
+
+<h4>Venues Table (1,696 records)</h4>
+<table>
+    <tr><th>Field</th><th>Type</th><th>Constraints</th></tr>
+    <tr><td>VenueID</td><td>INT</td><td>PRIMARY KEY, AUTO_INCREMENT</td></tr>
+    <tr><td>VenueName</td><td>VARCHAR(100)</td><td>NOT NULL</td></tr>
+    <tr><td>VenueAddress</td><td>VARCHAR(150)</td><td>NOT NULL</td></tr>
+    <tr><td>Latitude</td><td>DECIMAL(10,7)</td><td>NOT NULL</td></tr>
+    <tr><td>Longitude</td><td>DECIMAL(10,7)</td><td>NOT NULL</td></tr>
+    <tr><td>SuburbID</td><td>INT</td><td>FK REFERENCES Suburbs(SuburbID)</td></tr>
+</table>
+
+<h4>VenueTypeLink Table (Junction)</h4>
+<table>
+    <tr><th>Field</th><th>Type</th><th>Constraints</th></tr>
+    <tr><td>VenueID</td><td>INT</td><td>FK, COMPOSITE PK</td></tr>
+    <tr><td>TypeID</td><td>INT</td><td>FK, COMPOSITE PK</td></tr>
+</table>
+
+<h4>Users Table (Admin Auth)</h4>
+<table>
+    <tr><th>Field</th><th>Type</th><th>Constraints</th></tr>
+    <tr><td>UserID</td><td>INT</td><td>PRIMARY KEY, AUTO_INCREMENT</td></tr>
+    <tr><td>Username</td><td>VARCHAR(50)</td><td>NOT NULL, UNIQUE</td></tr>
+    <tr><td>PasswordHash</td><td>VARCHAR(255)</td><td>NOT NULL</td></tr>
+    <tr><td>Role</td><td>VARCHAR(20)</td><td>NOT NULL, DEFAULT 'admin'</td></tr>
+    <tr><td>CreatedDate</td><td>DATETIME</td><td>DEFAULT CURRENT_TIMESTAMP</td></tr>
+</table>
+
+<h4>Entity-Relationship Diagram</h4>
+<pre>Suburbs (1) ────&lt; (M) Venues (M) &gt;──── (M) VenueTypes
+                              \                /
+                               \── VenueTypeLink ──/
+
+Users (standalone — admin authentication)</pre>
+
+<hr class="divider">
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<h2 id="s4">4. Proposed Solution</h2>
+
+<h3>4.1 HCI &mdash; Design Principles</h3>
+<table>
+    <tr><th>Principle</th><th>Application in Wireframes</th></tr>
+    <tr><td>Contrast</td><td>Dark nav bar vs light content; blue primary buttons vs red delete; admin navy nav vs public dark nav</td></tr>
+    <tr><td>Alignment</td><td>Left-aligned form labels; consistent table columns; two-column form rows for related fields</td></tr>
+    <tr><td>Repetition</td><td>Consistent venue card design (image, name, suburb, badge, link) on all listing pages; identical stat cards on dashboard</td></tr>
+    <tr><td>Proximity</td><td>Related filters grouped in sidebar; venue info + map side by side; suburb/type fields adjacent in forms</td></tr>
+    <tr><td>Visual Hierarchy</td><td>Large hero heading; venue name as largest text on detail page; stat values in large bold font</td></tr>
+</table>
+
+<h3>4.1 HCI &mdash; Usability Features</h3>
+<table>
+    <tr><th>Feature</th><th>Purpose</th></tr>
+    <tr><td>Consistent navigation</td><td>Same nav bar on all public pages; distinct admin nav on admin pages</td></tr>
+    <tr><td>Prominent search bar</td><td>Hero section placement makes primary task immediately accessible</td></tr>
+    <tr><td>Results count</td><td>"Showing X of 1,696" keeps users informed of filter state</td></tr>
+    <tr><td>Breadcrumbs</td><td>Shows location in site hierarchy; enables easy backtracking</td></tr>
+    <tr><td>Pagination</td><td>Breaks 1,696 results into manageable pages</td></tr>
+    <tr><td>Related venues</td><td>Same-suburb suggestions for further discovery</td></tr>
+    <tr><td>Placeholder text</td><td>Example values guide correct data entry in forms</td></tr>
+    <tr><td>Accessibility</td><td>Required field markers (*), clear labels, high contrast throughout</td></tr>
+</table>
+
+<h3>4.2 Algorithms</h3>
+<p>See the <a href="data-dictionary.html" style="color:#6c8cff;">Data Dictionary &amp; SQL</a> page for full details. Summary:</p>
+<ul>
+    <li><strong>5 pseudocode algorithms:</strong> Search, Filter (multi-criteria), Sort, Authentication, CRUD operations</li>
+    <li><strong>11 SQL queries:</strong> CREATE TABLE, SELECT with JOIN, LIKE search, GROUP BY counts, INSERT, UPDATE, DELETE</li>
+</ul>
+
+<h3>4.3 Navigation</h3>
+<pre>PUBLIC:  HOME ──&gt; BROWSE/SEARCH ──&gt; VENUE DETAIL (+ Related Venues)
+
+ADMIN:   LOGIN ──&gt; DASHBOARD ──&gt; ADD / EDIT / DELETE VENUE</pre>
+<p>All pages include a consistent navigation bar. Public users can access Home, Browse, About, and Admin Login. Admin users see Dashboard, Manage Venues, and Logout.</p>
+
+<h3>4.4 Acknowledgements</h3>
+<ul>
+    <li>Brisbane City Council. (2026). <em>Events Locations Dataset</em>. BCC Open Data Portal. data.brisbane.qld.gov.au</li>
+    <li>Creative Commons. <em>Attribution 4.0 International (CC BY 4.0)</em>. creativecommons.org/licenses/by/4.0/</li>
+    <li>Opendatasoft. <em>Opendatasoft Platform</em>. opendatasoft.com</li>
+</ul>
+
+<hr class="divider">
+<p style="text-align:center; color:#5a5a70; font-size:0.8rem; margin-top:2rem;">Digital Solutions IA1 &mdash; Kedron State High School 2026</p>
+
+</div>
+</body>
+</html>

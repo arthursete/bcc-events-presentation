@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Dictionary & SQL</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e4e4ef;
+            padding: 2rem;
+            line-height: 1.7;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        h2 {
+            font-size: 1.3rem; font-weight: 700; margin: 2.5rem 0 1rem;
+            padding-bottom: 0.5rem; border-bottom: 1px solid #2a2a3a;
+            color: #6c8cff;
+        }
+        h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: #a78bfa; }
+        p { color: #8888a0; margin-bottom: 0.75rem; font-size: 0.92rem; }
+        .subtitle { color: #5a5a70; font-size: 0.9rem; margin-bottom: 2rem; }
+        table {
+            width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem;
+            font-size: 0.85rem; background: #12121a; border-radius: 8px; overflow: hidden;
+        }
+        th, td { text-align: left; padding: 0.65rem 1rem; border-bottom: 1px solid #1e1e2e; }
+        th { background: #1a1a26; font-weight: 600; color: #e4e4ef; }
+        td { color: #8888a0; }
+        tr:last-child td { border-bottom: none; }
+        pre {
+            background: #12121a; border: 1px solid #2a2a3a; border-radius: 8px;
+            padding: 1.25rem; overflow-x: auto; margin: 1rem 0;
+        }
+        code {
+            font-family: 'Fira Code', monospace; font-size: 0.82rem;
+            line-height: 1.7; color: #b0b0cc;
+        }
+        .keyword { color: #6c8cff; }
+        .string { color: #34d399; }
+        .comment { color: #5a5a70; font-style: italic; }
+        .er-diagram {
+            background: #12121a; border: 1px solid #2a2a3a; border-radius: 8px;
+            padding: 1.5rem; text-align: center; margin: 1rem 0;
+        }
+        .er-diagram pre { background: none; border: none; padding: 0; display: inline-block; text-align: left; }
+        .tag {
+            display: inline-block; font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 0.2rem 0.6rem; border-radius: 4px; margin-right: 0.5rem;
+        }
+        .tag-pk { background: rgba(108,140,255,0.15); color: #6c8cff; }
+        .tag-fk { background: rgba(167,139,250,0.15); color: #a78bfa; }
+        .tag-nn { background: rgba(52,211,153,0.15); color: #34d399; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1>Data Dictionary & SQL Queries</h1>
+<p class="subtitle">BCC Events Locations Web Application &mdash; 5 normalised tables, 11 SQL queries, 5 pseudocode algorithms</p>
+
+<!-- ─── DATA DICTIONARY ─── -->
+<h2>1. Data Dictionary</h2>
+<p>The original flat CSV dataset (1,696 rows, 8 columns) is normalised into five relational tables to eliminate redundancy and support efficient querying.</p>
+
+<h3>1.1 Suburbs Table</h3>
+<p>Stores the 186 unique Brisbane suburbs referenced by venue records.</p>
+<table>
+    <tr><th>Field</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    <tr><td>SuburbID</td><td>INT</td><td><span class="tag tag-pk">PK</span> AUTO_INCREMENT</td><td>Unique identifier for each suburb</td></tr>
+    <tr><td>SuburbName</td><td>VARCHAR(50)</td><td><span class="tag tag-nn">NOT NULL</span> UNIQUE</td><td>Suburb name (e.g. "Chermside")</td></tr>
+</table>
+
+<h3>1.2 VenueTypes Table</h3>
+<p>Stores the 10 distinct venue type categories.</p>
+<table>
+    <tr><th>Field</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    <tr><td>TypeID</td><td>INT</td><td><span class="tag tag-pk">PK</span> AUTO_INCREMENT</td><td>Unique identifier for each venue type</td></tr>
+    <tr><td>TypeName</td><td>VARCHAR(50)</td><td><span class="tag tag-nn">NOT NULL</span> UNIQUE</td><td>Type name (e.g. "Park", "Library")</td></tr>
+</table>
+
+<h3>1.3 Venues Table</h3>
+<p>Stores the 1,696 event venue records with location data.</p>
+<table>
+    <tr><th>Field</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    <tr><td>VenueID</td><td>INT</td><td><span class="tag tag-pk">PK</span> AUTO_INCREMENT</td><td>Unique identifier for each venue</td></tr>
+    <tr><td>VenueName</td><td>VARCHAR(100)</td><td><span class="tag tag-nn">NOT NULL</span></td><td>Name of the venue</td></tr>
+    <tr><td>VenueAddress</td><td>VARCHAR(150)</td><td><span class="tag tag-nn">NOT NULL</span></td><td>Full street address</td></tr>
+    <tr><td>Latitude</td><td>DECIMAL(10,7)</td><td><span class="tag tag-nn">NOT NULL</span></td><td>GPS latitude (-27.65 to -27.28)</td></tr>
+    <tr><td>Longitude</td><td>DECIMAL(10,7)</td><td><span class="tag tag-nn">NOT NULL</span></td><td>GPS longitude (152.79 to 153.42)</td></tr>
+    <tr><td>SuburbID</td><td>INT</td><td><span class="tag tag-fk">FK</span> <span class="tag tag-nn">NOT NULL</span></td><td>References Suburbs(SuburbID)</td></tr>
+</table>
+
+<h3>1.4 VenueTypeLink Table (Junction)</h3>
+<p>Resolves the many-to-many relationship between venues and venue types.</p>
+<table>
+    <tr><th>Field</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    <tr><td>VenueID</td><td>INT</td><td><span class="tag tag-fk">FK</span> <span class="tag tag-pk">COMPOSITE PK</span></td><td>References Venues(VenueID)</td></tr>
+    <tr><td>TypeID</td><td>INT</td><td><span class="tag tag-fk">FK</span> <span class="tag tag-pk">COMPOSITE PK</span></td><td>References VenueTypes(TypeID)</td></tr>
+</table>
+
+<h3>1.5 Users Table</h3>
+<p>Stores admin accounts for the web application's content management.</p>
+<table>
+    <tr><th>Field</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    <tr><td>UserID</td><td>INT</td><td><span class="tag tag-pk">PK</span> AUTO_INCREMENT</td><td>Unique identifier</td></tr>
+    <tr><td>Username</td><td>VARCHAR(50)</td><td><span class="tag tag-nn">NOT NULL</span> UNIQUE</td><td>Admin login username</td></tr>
+    <tr><td>PasswordHash</td><td>VARCHAR(255)</td><td><span class="tag tag-nn">NOT NULL</span></td><td>Hashed password (never plain text)</td></tr>
+    <tr><td>Role</td><td>VARCHAR(20)</td><td><span class="tag tag-nn">NOT NULL</span> DEFAULT 'admin'</td><td>Access control role</td></tr>
+    <tr><td>CreatedDate</td><td>DATETIME</td><td><span class="tag tag-nn">NOT NULL</span> DEFAULT CURRENT_TIMESTAMP</td><td>Account creation date</td></tr>
+</table>
+
+<h3>Entity-Relationship Diagram</h3>
+<div class="er-diagram">
+<pre><code>Suburbs (1) ────&lt; (M) Venues (M) &gt;──── (M) VenueTypes
+                              \                /
+                               \── VenueTypeLink ──/
+
+Users (standalone — admin authentication)</code></pre>
+</div>
+
+<!-- ─── SQL QUERIES ─── -->
+<h2>2. SQL Queries</h2>
+
+<h3>2.1 CREATE TABLE Statements</h3>
+<pre><code><span class="keyword">CREATE TABLE</span> Suburbs (
+    SuburbID   <span class="keyword">INT PRIMARY KEY AUTO_INCREMENT</span>,
+    SuburbName <span class="keyword">VARCHAR</span>(50) <span class="keyword">NOT NULL UNIQUE</span>
+);
+
+<span class="keyword">CREATE TABLE</span> VenueTypes (
+    TypeID   <span class="keyword">INT PRIMARY KEY AUTO_INCREMENT</span>,
+    TypeName <span class="keyword">VARCHAR</span>(50) <span class="keyword">NOT NULL UNIQUE</span>
+);
+
+<span class="keyword">CREATE TABLE</span> Venues (
+    VenueID      <span class="keyword">INT PRIMARY KEY AUTO_INCREMENT</span>,
+    VenueName    <span class="keyword">VARCHAR</span>(100) <span class="keyword">NOT NULL</span>,
+    VenueAddress <span class="keyword">VARCHAR</span>(150) <span class="keyword">NOT NULL</span>,
+    Latitude     <span class="keyword">DECIMAL</span>(10,7) <span class="keyword">NOT NULL</span>,
+    Longitude    <span class="keyword">DECIMAL</span>(10,7) <span class="keyword">NOT NULL</span>,
+    SuburbID     <span class="keyword">INT NOT NULL</span>,
+    <span class="keyword">FOREIGN KEY</span> (SuburbID) <span class="keyword">REFERENCES</span> Suburbs(SuburbID)
+);
+
+<span class="keyword">CREATE TABLE</span> VenueTypeLink (
+    VenueID <span class="keyword">INT NOT NULL</span>,
+    TypeID  <span class="keyword">INT NOT NULL</span>,
+    <span class="keyword">PRIMARY KEY</span> (VenueID, TypeID),
+    <span class="keyword">FOREIGN KEY</span> (VenueID) <span class="keyword">REFERENCES</span> Venues(VenueID),
+    <span class="keyword">FOREIGN KEY</span> (TypeID)  <span class="keyword">REFERENCES</span> VenueTypes(TypeID)
+);
+
+<span class="keyword">CREATE TABLE</span> Users (
+    UserID       <span class="keyword">INT PRIMARY KEY AUTO_INCREMENT</span>,
+    Username     <span class="keyword">VARCHAR</span>(50) <span class="keyword">NOT NULL UNIQUE</span>,
+    PasswordHash <span class="keyword">VARCHAR</span>(255) <span class="keyword">NOT NULL</span>,
+    Role         <span class="keyword">VARCHAR</span>(20) <span class="keyword">NOT NULL DEFAULT</span> <span class="string">'admin'</span>,
+    CreatedDate  <span class="keyword">DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP</span>
+);</code></pre>
+
+<h3>2.2 SELECT Venues by Suburb (JOIN)</h3>
+<pre><code><span class="keyword">SELECT</span> v.VenueID, v.VenueName, v.VenueAddress, s.SuburbName
+<span class="keyword">FROM</span> Venues v
+<span class="keyword">INNER JOIN</span> Suburbs s <span class="keyword">ON</span> v.SuburbID = s.SuburbID
+<span class="keyword">WHERE</span> s.SuburbName = <span class="string">'Chermside'</span>;</code></pre>
+
+<h3>2.3 SELECT Venues by Type (Junction Table JOIN)</h3>
+<pre><code><span class="keyword">SELECT</span> v.VenueID, v.VenueName, v.VenueAddress, s.SuburbName
+<span class="keyword">FROM</span> Venues v
+<span class="keyword">INNER JOIN</span> VenueTypeLink vtl <span class="keyword">ON</span> v.VenueID = vtl.VenueID
+<span class="keyword">INNER JOIN</span> VenueTypes vt <span class="keyword">ON</span> vtl.TypeID = vt.TypeID
+<span class="keyword">INNER JOIN</span> Suburbs s <span class="keyword">ON</span> v.SuburbID = s.SuburbID
+<span class="keyword">WHERE</span> vt.TypeName = <span class="string">'Library'</span>;</code></pre>
+
+<h3>2.4 Search by Name (LIKE)</h3>
+<pre><code><span class="keyword">SELECT</span> v.VenueID, v.VenueName, v.VenueAddress, s.SuburbName
+<span class="keyword">FROM</span> Venues v
+<span class="keyword">INNER JOIN</span> Suburbs s <span class="keyword">ON</span> v.SuburbID = s.SuburbID
+<span class="keyword">WHERE</span> v.VenueName <span class="keyword">LIKE</span> <span class="string">'%Brigade%'</span>;</code></pre>
+
+<h3>2.5 COUNT Venues per Suburb (GROUP BY)</h3>
+<pre><code><span class="keyword">SELECT</span> s.SuburbName, <span class="keyword">COUNT</span>(v.VenueID) <span class="keyword">AS</span> VenueCount
+<span class="keyword">FROM</span> Suburbs s
+<span class="keyword">LEFT JOIN</span> Venues v <span class="keyword">ON</span> s.SuburbID = v.SuburbID
+<span class="keyword">GROUP BY</span> s.SuburbName
+<span class="keyword">ORDER BY</span> VenueCount <span class="keyword">DESC</span>;</code></pre>
+
+<h3>2.6 INSERT New Venue (Admin)</h3>
+<pre><code><span class="comment">-- Step 1: Insert the venue record</span>
+<span class="keyword">INSERT INTO</span> Venues (VenueName, VenueAddress, Latitude, Longitude, SuburbID)
+<span class="keyword">VALUES</span> (<span class="string">'New Community Centre'</span>, <span class="string">'10 Example St, Paddington'</span>, -27.4598, 153.0137, 42);
+
+<span class="comment">-- Step 2: Link to venue type(s)</span>
+<span class="keyword">INSERT INTO</span> VenueTypeLink (VenueID, TypeID)
+<span class="keyword">VALUES</span> (<span class="keyword">LAST_INSERT_ID</span>(), 3);</code></pre>
+
+<h3>2.7 UPDATE Venue Details</h3>
+<pre><code><span class="keyword">UPDATE</span> Venues
+<span class="keyword">SET</span> VenueName = <span class="string">'Updated Venue Name'</span>,
+    VenueAddress = <span class="string">'99 New Address St, Ashgrove'</span>
+<span class="keyword">WHERE</span> VenueID = 15;</code></pre>
+
+<h3>2.8 DELETE a Venue</h3>
+<pre><code><span class="comment">-- Step 1: Remove junction table links (referential integrity)</span>
+<span class="keyword">DELETE FROM</span> VenueTypeLink <span class="keyword">WHERE</span> VenueID = 15;
+
+<span class="comment">-- Step 2: Delete the venue record</span>
+<span class="keyword">DELETE FROM</span> Venues <span class="keyword">WHERE</span> VenueID = 15;</code></pre>
+
+<!-- ─── PSEUDOCODE ─── -->
+<h2>3. Pseudocode Algorithms</h2>
+
+<h3>3.1 Search Algorithm</h3>
+<pre><code>FUNCTION SearchVenues(searchTerm)
+    SET results TO empty list
+
+    QUERY database:
+        SELECT VenueID, VenueName, SuburbName, TypeName
+        FROM Venues
+        JOIN Suburbs ON Venues.SuburbID = Suburbs.SuburbID
+        JOIN VenueTypeLink ON Venues.VenueID = VenueTypeLink.VenueID
+        JOIN VenueTypes ON VenueTypeLink.TypeID = VenueTypes.TypeID
+        WHERE VenueName LIKE "%" + searchTerm + "%"
+           OR SuburbName LIKE "%" + searchTerm + "%"
+           OR TypeName LIKE "%" + searchTerm + "%"
+
+    FOR EACH row in query results
+        IF row.VenueID NOT already in results THEN
+            ADD row to results
+        END IF
+    END FOR
+
+    RETURN results
+END FUNCTION</code></pre>
+
+<h3>3.2 Authentication Algorithm</h3>
+<pre><code>FUNCTION AuthenticateUser(inputUsername, inputPassword)
+    QUERY database:
+        SELECT UserID, Username, PasswordHash, Role
+        FROM Users WHERE Username = inputUsername
+
+    IF no record found THEN
+        DISPLAY "Invalid username or password"
+        RETURN false
+    END IF
+
+    SET storedHash TO query result PasswordHash
+    SET inputHash TO HashPassword(inputPassword)
+
+    IF inputHash = storedHash THEN
+        CREATE session for user with UserID and Role
+        DISPLAY "Login successful"
+        RETURN true
+    ELSE
+        DISPLAY "Invalid username or password"
+        RETURN false
+    END IF
+END FUNCTION</code></pre>
+
+<h3>3.3 Filter Algorithm (Multi-Criteria)</h3>
+<pre><code>FUNCTION FilterVenues(selectedSuburb, selectedType)
+    SET baseQuery TO "SELECT v.VenueID, v.VenueName, s.SuburbName, vt.TypeName
+                      FROM Venues v
+                      JOIN Suburbs s ON v.SuburbID = s.SuburbID
+                      JOIN VenueTypeLink vtl ON v.VenueID = vtl.VenueID
+                      JOIN VenueTypes vt ON vtl.TypeID = vt.TypeID"
+    SET conditions TO empty list
+
+    IF selectedSuburb is NOT empty THEN
+        ADD "s.SuburbName = selectedSuburb" to conditions
+    END IF
+
+    IF selectedType is NOT empty THEN
+        ADD "vt.TypeName = selectedType" to conditions
+    END IF
+
+    IF conditions is NOT empty THEN
+        APPEND " WHERE " + JOIN conditions WITH " AND " TO baseQuery
+    END IF
+
+    EXECUTE baseQuery
+    RETURN query results
+END FUNCTION</code></pre>
+
+<h3>3.4 Add Venue (CRUD - Create)</h3>
+<pre><code>FUNCTION AddVenue(name, address, lat, long, suburbName, typeNames)
+    CHECK user is logged in as admin
+    IF NOT admin THEN DISPLAY "Access denied" and RETURN
+
+    VALIDATE all fields are not empty
+    IF validation fails THEN DISPLAY "All fields required" and RETURN
+
+    QUERY database to find SuburbID for suburbName
+    IF suburb not found THEN INSERT new suburb
+
+    INSERT INTO Venues VALUES (name, address, lat, long, suburbID)
+    SET newVenueID TO last inserted ID
+
+    FOR EACH typeName IN typeNames
+        QUERY TypeID for typeName
+        INSERT INTO VenueTypeLink (newVenueID, TypeID)
+    END FOR
+
+    DISPLAY "Venue added successfully"
+END FUNCTION</code></pre>
+
+<h3>3.5 Delete Venue</h3>
+<pre><code>FUNCTION DeleteVenue(venueID)
+    CHECK user is logged in as admin
+    IF NOT admin THEN DISPLAY "Access denied" and RETURN
+
+    DISPLAY "Are you sure you want to delete this venue?"
+    IF user confirms THEN
+        DELETE FROM VenueTypeLink WHERE VenueID = venueID
+        DELETE FROM Venues WHERE VenueID = venueID
+        DISPLAY "Venue deleted successfully"
+    ELSE
+        DISPLAY "Deletion cancelled"
+    END IF
+END FUNCTION</code></pre>
+
+</div>
+</body>
+</html>

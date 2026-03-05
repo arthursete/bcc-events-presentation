@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Existing Solution Analysis</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e4e4ef;
+            padding: 2rem;
+            line-height: 1.7;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        h2 {
+            font-size: 1.3rem; font-weight: 700; margin: 2.5rem 0 1rem;
+            padding-bottom: 0.5rem; border-bottom: 1px solid #2a2a3a;
+            color: #34d399;
+        }
+        h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: #a78bfa; }
+        p { color: #8888a0; margin-bottom: 0.75rem; font-size: 0.92rem; }
+        .subtitle { color: #5a5a70; font-size: 0.9rem; margin-bottom: 2rem; }
+        strong { color: #e4e4ef; }
+        table {
+            width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem;
+            font-size: 0.85rem; background: #12121a; border-radius: 8px; overflow: hidden;
+        }
+        th, td { text-align: left; padding: 0.65rem 1rem; border-bottom: 1px solid #1e1e2e; }
+        th { background: #1a1a26; font-weight: 600; color: #e4e4ef; }
+        td { color: #8888a0; }
+        tr:last-child td { border-bottom: none; }
+        .pros-cons {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1rem 0;
+        }
+        @media (max-width: 700px) { .pros-cons { grid-template-columns: 1fr; } }
+        .pros, .cons {
+            background: #12121a; border-radius: 8px; padding: 1.25rem;
+            border: 1px solid #2a2a3a;
+        }
+        .pros h3 { color: #34d399; margin-top: 0; }
+        .cons h3 { color: #f87171; margin-top: 0; }
+        .pros li, .cons li {
+            color: #8888a0; font-size: 0.88rem; margin-bottom: 0.5rem; line-height: 1.6;
+        }
+        ul { padding-left: 1.25rem; }
+        li { margin-bottom: 0.4rem; }
+        .summary-box {
+            background: linear-gradient(135deg, rgba(108,140,255,0.08), rgba(167,139,250,0.08));
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .summary-box h3 { color: #6c8cff; margin-top: 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1>Existing Solution Analysis</h1>
+<p class="subtitle">Brisbane City Council Open Data Portal (data.brisbane.qld.gov.au) &mdash; Powered by Opendatasoft</p>
+
+<h2>Solution Overview</h2>
+<p>The Brisbane City Council Open Data Portal is a government data publishing platform hosting 384+ datasets for public access. It is <strong>not designed as an end-user application</strong> for finding events or venues &mdash; it is a data catalogue primarily intended for developers, researchers, and data analysts.</p>
+<p>The Events Locations dataset contains <strong>1,696 event venue records</strong> across <strong>186 suburbs</strong>, published under a Creative Commons Attribution 4.0 licence. It can be downloaded in CSV, JSON, Excel, and GeoJSON formats.</p>
+
+<h2>How It Works</h2>
+<p>Users must navigate through the catalogue of 384+ datasets to find the Events Locations dataset, then choose between viewing tabs:</p>
+<table>
+    <tr><th>View</th><th>Description</th></tr>
+    <tr><td>Table</td><td>Paginated spreadsheet-style table with raw venue data in columns</td></tr>
+    <tr><td>Map</td><td>Leaflet.js interactive map with venue markers; shape-drawing spatial filters</td></tr>
+    <tr><td>Analyse</td><td>Basic chart builder for simple visualisations (cannot save)</td></tr>
+    <tr><td>Export/API</td><td>Download in CSV, JSON, Excel, GeoJSON; Opendatasoft Explore API</td></tr>
+</table>
+
+<h2>UI Components</h2>
+<table>
+    <tr><th>Component</th><th>Description</th></tr>
+    <tr><td>Top Navigation Bar</td><td>Links to Home, Stories, Data, Visualise, API, About, Contact, Sign In</td></tr>
+    <tr><td>Search Bar</td><td>Text search across the catalogue and within datasets</td></tr>
+    <tr><td>Theme Filters</td><td>Category filters: Arts &amp; Culture, Parks &amp; Recreation, Transport, etc.</td></tr>
+    <tr><td>Dataset Cards</td><td>Title, publisher, last-updated timestamp for each dataset</td></tr>
+    <tr><td>Tab Navigation</td><td>Table, Map, Analyse, Export tabs within each dataset</td></tr>
+    <tr><td>Data Table</td><td>Paginated, sortable spreadsheet with raw column data</td></tr>
+    <tr><td>Interactive Map</td><td>Leaflet.js with markers, basemap options, geographic shape tools</td></tr>
+    <tr><td>Filter Sidebar</td><td>Active filters panel with faceted filtering options</td></tr>
+    <tr><td>Record Counter</td><td>Total records matching current filters</td></tr>
+    <tr><td>Download Buttons</td><td>CSV, JSON, Excel, GeoJSON export options</td></tr>
+    <tr><td>Footer</td><td>BCC branding, Indigenous acknowledgement, 109 language translations</td></tr>
+</table>
+
+<h2>Pros & Cons</h2>
+<div class="pros-cons">
+    <div class="pros">
+        <h3>Pros (7)</h3>
+        <ul>
+            <li><strong>Comprehensive raw data access</strong> &mdash; Full dataset freely available in multiple formats</li>
+            <li><strong>API access</strong> &mdash; Programmatic access via Opendatasoft Explore API</li>
+            <li><strong>Geographic visualisation</strong> &mdash; Built-in map view with spatial filtering</li>
+            <li><strong>Multiple related datasets</strong> &mdash; Cross-reference with Library, Music, Markets events</li>
+            <li><strong>Open licence</strong> &mdash; CC BY 4.0 allows free reuse</li>
+            <li><strong>Daily updates</strong> &mdash; Refreshed daily from Trumba Calendar API</li>
+            <li><strong>Multiple export formats</strong> &mdash; CSV, JSON, Excel, GeoJSON</li>
+        </ul>
+    </div>
+    <div class="cons">
+        <h3>Cons (10)</h3>
+        <ul>
+            <li><strong>Not for general public</strong> &mdash; Data catalogue, not venue discovery tool</li>
+            <li><strong>No suburb browsing</strong> &mdash; Can't type a suburb and see nearby venues</li>
+            <li><strong>No visual type filtering</strong> &mdash; Raw field values, no icons or categories</li>
+            <li><strong>No data integration</strong> &mdash; Locations and events are separate datasets</li>
+            <li><strong>Raw data presentation</strong> &mdash; Coordinates, field names, unformatted text</li>
+            <li><strong>No personalisation</strong> &mdash; No favourites, recommendations, or preferences</li>
+            <li><strong>Poor mobile experience</strong> &mdash; Desktop-focused interface</li>
+            <li><strong>No proximity search</strong> &mdash; No "near me" or distance radius filtering</li>
+            <li><strong>Overwhelming UI</strong> &mdash; API docs, JSON schemas, metadata visible</li>
+            <li><strong>Limited events</strong> &mdash; Trumba cap restricts to 1,000&ndash;2,000 items</li>
+        </ul>
+    </div>
+</div>
+
+<h2>Key Pages</h2>
+
+<h3>Explore Catalogue</h3>
+<p>The main entry shows 384+ datasets as cards. Users must search or browse theme categories to find Events Locations. No prominent "Events" or "Venues" section exists.</p>
+
+<h3>Table View</h3>
+<p>A paginated spreadsheet showing all 1,696 records. Plain, no visual hierarchy, icons, or colour coding. Users must page through or search to find venues.</p>
+
+<h3>Map View</h3>
+<p>Venues plotted as markers on a Leaflet.js map with multiple basemaps. Geographic shape-drawing tools allow spatial queries but are unintuitive for casual users. No suburb boundaries, no type clustering.</p>
+
+<h3>Metadata View</h3>
+<p>Technical metadata: dataset identifier, CC BY 4.0 licence, JSON schema, download statistics. Useful for developers, irrelevant for general users.</p>
+
+<div class="summary-box">
+    <h3>Gap Analysis &mdash; Why a New Solution is Needed</h3>
+    <p>The BCC Open Data Portal is excellent for raw data access but fundamentally fails as a tool for the general public to discover event locations. Its data-catalogue design, technical interface, lack of cross-dataset integration, absence of suburb-based browsing, and raw data presentation create significant barriers for non-technical users.</p>
+    <p style="margin-bottom:0;"><strong>This gap represents a clear opportunity for BCC Events Finder</strong> &mdash; a purpose-built web application that transforms the same data into an accessible, visually engaging venue discovery experience.</p>
+</div>
+
+</div>
+</body>
+</html>

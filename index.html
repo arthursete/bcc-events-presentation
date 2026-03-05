@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCC Events Finder — IA1 Technical Proposal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --surface-3: #22222f;
+            --border: #2a2a3a;
+            --border-hover: #3a3a50;
+            --text: #e4e4ef;
+            --text-muted: #8888a0;
+            --text-dim: #5a5a70;
+            --accent: #6c8cff;
+            --accent-glow: rgba(108, 140, 255, 0.15);
+            --accent-2: #a78bfa;
+            --accent-3: #34d399;
+            --accent-4: #fb923c;
+            --accent-5: #f472b6;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        nav .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        nav .logo span { color: var(--accent); }
+
+        nav .nav-links {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.4rem 0.9rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        nav .nav-links a:hover,
+        nav .nav-links a.active {
+            color: var(--text);
+            background: var(--surface-2);
+        }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 10rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero .badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 50%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .hero .stat {
+            text-align: center;
+        }
+
+        .hero .stat .num {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .hero .stat .label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 0.2rem;
+        }
+
+        /* ── SECTIONS ── */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header .tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ── DELIVERABLES GRID ── */
+        .deliverables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .card .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .card .card-icon.blue { background: rgba(108, 140, 255, 0.12); }
+        .card .card-icon.purple { background: rgba(167, 139, 250, 0.12); }
+        .card .card-icon.green { background: rgba(52, 211, 153, 0.12); }
+        .card .card-icon.orange { background: rgba(251, 146, 60, 0.12); }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .card .card-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .card .meta-item {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .card .meta-item strong {
+            color: var(--text-muted);
+        }
+
+        .card .open-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1.25rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .card .open-btn::after {
+            content: '\2192';
+            transition: transform 0.2s;
+        }
+
+        .card:hover .open-btn::after {
+            transform: translateX(4px);
+        }
+
+        /* ── MARKING CRITERIA ── */
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .criteria-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .criteria-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .criteria-card .score {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .criteria-card .name {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .criteria-card .bar-bg {
+            height: 4px;
+            background: var(--surface-3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .criteria-card .bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: var(--accent);
+        }
+
+        /* ── CONTENT VIEWER ── */
+        #content-viewer {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: var(--bg);
+        }
+
+        #content-viewer .viewer-header {
+            height: 50px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+        }
+
+        #content-viewer .viewer-header .title {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        #content-viewer .viewer-header button {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.35rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        #content-viewer .viewer-header button:hover {
+            background: var(--surface-3);
+        }
+
+        #content-viewer iframe {
+            width: 100%;
+            height: calc(100vh - 50px);
+            border: none;
+        }
+
+        /* ── PROPOSAL CONTENT ── */
+        .proposal-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .proposal-section .section-bar {
+            background: var(--surface-2);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .proposal-section .section-bar:hover {
+            background: var(--surface-3);
+        }
+
+        .proposal-section .section-bar h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .proposal-section .section-bar .toggle {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .proposal-section .section-bar.open .toggle {
+            transform: rotate(180deg);
+        }
+
+        .proposal-section .section-content {
+            display: none;
+            padding: 1.5rem;
+        }
+
+        .proposal-section .section-content.open {
+            display: block;
+        }
+
+        .proposal-section .section-content h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 1.25rem 0 0.5rem;
+            color: var(--accent);
+        }
+
+        .proposal-section .section-content h4:first-child {
+            margin-top: 0;
+        }
+
+        .proposal-section .section-content p,
+        .proposal-section .section-content li {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .proposal-section .section-content ul {
+            padding-left: 1.25rem;
+            margin: 0.5rem 0;
+        }
+
+        .proposal-section .section-content li {
+            margin-bottom: 0.3rem;
+        }
+
+        .proposal-section .section-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.75rem 0;
+            font-size: 0.85rem;
+        }
+
+        .proposal-section .section-content th,
+        .proposal-section .section-content td {
+            text-align: left;
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .proposal-section .section-content th {
+            color: var(--text);
+            font-weight: 600;
+            background: var(--surface-2);
+        }
+
+        .proposal-section .section-content td {
+            color: var(--text-muted);
+        }
+
+        .proposal-section .section-content pre {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            overflow-x: auto;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin: 0.75rem 0;
+        }
+
+        .proposal-section .section-content code {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="logo">BCC <span>Events Finder</span></div>
+    <div class="nav-links">
+        <a href="#hero" class="active">Overview</a>
+        <a href="#deliverables">Deliverables</a>
+        <a href="#proposal">Proposal</a>
+        <a href="#criteria">Criteria</a>
+        <a href="wireframes.html" target="_blank">Wireframes</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+    <div class="badge">
+        <span class="dot"></span>
+        Digital Solutions IA1 — Kedron SHS 2026
+    </div>
+    <h1>BCC Events Finder<br>Technical Proposal</h1>
+    <p>A web application to make Brisbane City Council's 1,696 event venue locations accessible, searchable, and user-friendly.</p>
+
+    <div class="stats-row">
+        <div class="stat">
+            <div class="num">1,696</div>
+            <div class="label">Venues</div>
+        </div>
+        <div class="stat">
+            <div class="num">186</div>
+            <div class="label">Suburbs</div>
+        </div>
+        <div class="stat">
+            <div class="num">10</div>
+            <div class="label">Venue Types</div>
+        </div>
+        <div class="stat">
+            <div class="num">6</div>
+            <div class="label">Page Wireframes</div>
+        </div>
+    </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section id="deliverables">
+    <div class="container">
+        <div class="section-header">
+            <div class="tag">Project Files</div>
+            <h2>Deliverables</h2>
+            <p>All components of the technical proposal</p>
+        </div>
+
+        <div class="deliverables-grid">
+            <!-- Wireframes -->
+            <a class="card" href="wireframes.html" target="_blank">
+                <div class="card-icon blue">&#9634;</div>
+                <h3>Wireframe Prototypes</h3>
+                <p>6-page low-fidelity HTML wireframes with annotated design principles and usability features. Includes Home, Browse, Detail, Login, Dashboard, and Add/Edit pages.</p>
+                <div class="card-meta">
+                    <span class="meta-item"><strong>6</strong> pages</span>
+                    <span class="meta-item"><strong>20+</strong> annotations</span>
+                    <span class="meta-item">HTML/CSS</span>
+                </div>
+                <span class="open-btn">Open Wireframes</span>
+            </a>
+
+            <!-- Data Dictionary -->
+            <div class="card" onclick="openViewer('data-dictionary.html', 'Data Dictionary & SQL')">
+                <div class="card-icon purple">&#9776;</div>
+                <h3>Data Dictionary & SQL</h3>
+                <p>5 normalised relational tables, 11 SQL queries covering all CRUD operations, and 5 pseudocode algorithms for search, filter, sort, auth, and CRUD.</p>
+                <div class="card-meta">
+                    <span class="meta-item"><strong>5</strong> tables</span>
+                    <span class="meta-item"><strong>11</strong> SQL queries</span>
+                    <span class="meta-item"><strong>5</strong> algorithms</span>
+                </div>
+                <span class="open-btn">View Data Dictionary</span>
+            </div>
+
+            <!-- Existing Solution -->
+            <div class="card" onclick="openViewer('existing-solution.html', 'Existing Solution Analysis')">
+                <div class="card-icon green">&#128270;</div>
+                <h3>Existing Solution Analysis</h3>
+                <p>Detailed analysis of Brisbane City Council's Open Data Portal — how it works, UI components, 7 pros, 10 cons, and the gap that justifies a new solution.</p>
+                <div class="card-meta">
+                    <span class="meta-item"><strong>7</strong> pros</span>
+                    <span class="meta-item"><strong>10</strong> cons</span>
+                    <span class="meta-item">BCC Portal</span>
+                </div>
+                <span class="open-btn">View Analysis</span>
+            </div>
+
+            <!-- Full Scaffolding -->
+            <div class="card" onclick="openViewer('scaffolding.html', 'Full Scaffolding Document')">
+                <div class="card-icon orange">&#128196;</div>
+                <h3>Full Scaffolding Document</h3>
+                <p>Complete technical proposal covering Introduction, User Story, Data Story, and Proposed Solution with all required sections for the IA1 submission.</p>
+                <div class="card-meta">
+                    <span class="meta-item"><strong>4</strong> sections</span>
+                    <span class="meta-item">Complete</span>
+                    <span class="meta-item">~2000 words</span>
+                </div>
+                <span class="open-btn">View Document</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROPOSAL OVERVIEW -->
+<section id="proposal" style="padding-bottom: 2rem;">
+    <div class="container">
+        <div class="section-header">
+            <div class="tag">Technical Proposal</div>
+            <h2>Proposal Overview</h2>
+            <p>Expandable sections covering all scaffolding requirements</p>
+        </div>
+
+        <!-- Section 1: Introduction -->
+        <div class="proposal-section">
+            <div class="section-bar" onclick="toggleSection(this)">
+                <h3><span style="color:var(--accent)">01</span> Introduction</h3>
+                <span class="toggle">&#9660;</span>
+            </div>
+            <div class="section-content">
+                <h4>Context</h4>
+                <p>Brisbane City Council publishes comprehensive venue data through their Open Data Portal, but the information is presented in a raw, technical format inaccessible to everyday users. <strong>BCC Events Finder</strong> proposes to transform this data into an intuitive venue discovery platform.</p>
+
+                <h4>Constraints</h4>
+                <table>
+                    <tr><th>Type</th><th>Detail</th></tr>
+                    <tr><td>Time</td><td>~15 hours class time; due 06/03/2026</td></tr>
+                    <tr><td>Data</td><td>1,696 records, CSV/Excel format, static venue locations only</td></tr>
+                    <tr><td>Legal</td><td>CC BY 4.0 licence; Australian Privacy Act compliance for admin data</td></tr>
+                </table>
+
+                <h4>Prescribed Criteria</h4>
+                <ul>
+                    <li>Web application format</li>
+                    <li>Access and filter BCC Events dataset</li>
+                    <li>Easy-to-understand data presentation</li>
+                    <li>Effective search functionality</li>
+                    <li>Administrative privileges</li>
+                </ul>
+
+                <h4>Self-Determined Criteria</h4>
+                <table>
+                    <tr><th>Impact</th><th>Criteria</th></tr>
+                    <tr><td>Personal</td><td>Empower residents to discover local community venues</td></tr>
+                    <tr><td>Social</td><td>Promote inclusion and accessibility for all users</td></tr>
+                    <tr><td>Economic</td><td>Drive foot traffic to venues, boost local business and tourism</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 2: User Story -->
+        <div class="proposal-section">
+            <div class="section-bar" onclick="toggleSection(this)">
+                <h3><span style="color:var(--accent-2)">02</span> User Story</h3>
+                <span class="toggle">&#9660;</span>
+            </div>
+            <div class="section-content">
+                <h4>2.1 Application Description</h4>
+                <p><strong>BCC Events Finder</strong> — a web application allowing Brisbane residents and visitors to search, filter, and explore 1,696 council event venues by suburb, venue type, or keyword.</p>
+
+                <table>
+                    <tr><th>Component</th><th>Technology</th></tr>
+                    <tr><td>Frontend</td><td>HTML, CSS, JavaScript</td></tr>
+                    <tr><td>Backend</td><td>Python (Flask)</td></tr>
+                    <tr><td>Database</td><td>SQLite</td></tr>
+                    <tr><td>Mapping</td><td>Leaflet.js</td></tr>
+                </table>
+
+                <h4>2.2 Existing Solution — BCC Open Data Portal</h4>
+                <p>The current portal (data.brisbane.qld.gov.au) is a data catalogue built on Opendatasoft. It provides table view, map view, and export/API access but is designed for developers, not the general public.</p>
+
+                <p><strong>Key Cons:</strong> Not designed for general public, no suburb-based browsing, raw data presentation, no venue type visual filtering, no mobile optimisation, overwhelming technical interface.</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Data Story -->
+        <div class="proposal-section">
+            <div class="section-bar" onclick="toggleSection(this)">
+                <h3><span style="color:var(--accent-3)">03</span> Data Story</h3>
+                <span class="toggle">&#9660;</span>
+            </div>
+            <div class="section-content">
+                <h4>3.1 Sample Data</h4>
+                <table>
+                    <tr><th>Property</th><th>Detail</th></tr>
+                    <tr><td>Source</td><td>BCC Open Data Portal</td></tr>
+                    <tr><td>Format</td><td>CSV / Excel</td></tr>
+                    <tr><td>Records</td><td>1,696 venues</td></tr>
+                    <tr><td>Suburbs</td><td>186 unique</td></tr>
+                    <tr><td>Venue Types</td><td>10 categories</td></tr>
+                    <tr><td>Licence</td><td>CC BY 4.0</td></tr>
+                </table>
+
+                <h4>Sample Records</h4>
+                <table>
+                    <tr><th>Venue</th><th>Type</th><th>Suburb</th><th>Lat</th><th>Long</th></tr>
+                    <tr><td>7th Brigade Park</td><td>Park</td><td>Chermside</td><td>-27.379</td><td>153.030</td></tr>
+                    <tr><td>Acacia Ridge Hall</td><td>Community Hall</td><td>Acacia Ridge</td><td>-27.587</td><td>153.026</td></tr>
+                    <tr><td>Zillmere Library</td><td>Library</td><td>Zillmere</td><td>-27.360</td><td>153.041</td></tr>
+                    <tr><td>Grow for Life Garden</td><td>Community Garden</td><td>Upper Mt Gravatt</td><td>-27.544</td><td>153.089</td></tr>
+                </table>
+
+                <h4>3.2 Data Dictionary — 5 Normalised Tables</h4>
+                <p><strong>Suburbs</strong> (SuburbID PK, SuburbName) — 186 records</p>
+                <p><strong>VenueTypes</strong> (TypeID PK, TypeName) — 10 records</p>
+                <p><strong>Venues</strong> (VenueID PK, VenueName, VenueAddress, Lat, Long, SuburbID FK) — 1,696 records</p>
+                <p><strong>VenueTypeLink</strong> (VenueID FK, TypeID FK) — junction table for many-to-many</p>
+                <p><strong>Users</strong> (UserID PK, Username, PasswordHash, Role, CreatedDate) — admin auth</p>
+
+                <pre><code>Suburbs (1) ────&lt; (M) Venues (M) &gt;──── (M) VenueTypes
+                              \                /
+                               \── VenueTypeLink ──/
+
+Users (standalone — admin authentication)</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 4: Proposed Solution -->
+        <div class="proposal-section">
+            <div class="section-bar" onclick="toggleSection(this)">
+                <h3><span style="color:var(--accent-4)">04</span> Proposed Solution</h3>
+                <span class="toggle">&#9660;</span>
+            </div>
+            <div class="section-content">
+                <h4>4.1 HCI — Design Principles</h4>
+                <table>
+                    <tr><th>Principle</th><th>Application</th></tr>
+                    <tr><td>Contrast</td><td>Dark nav bar vs light content; blue primary vs red delete buttons</td></tr>
+                    <tr><td>Alignment</td><td>Left-aligned form labels; consistent table columns</td></tr>
+                    <tr><td>Repetition</td><td>Consistent venue card design across all pages</td></tr>
+                    <tr><td>Proximity</td><td>Related filters grouped in sidebar; venue info + map side by side</td></tr>
+                    <tr><td>Visual Hierarchy</td><td>Large hero heading; venue name as largest text on detail page</td></tr>
+                </table>
+
+                <h4>4.1 HCI — Usability Features</h4>
+                <ul>
+                    <li>Consistent navigation on all pages</li>
+                    <li>Prominent search bar in hero section</li>
+                    <li>Breadcrumb navigation on detail pages</li>
+                    <li>Results count and sort options</li>
+                    <li>Pagination for 1,696 records</li>
+                    <li>Related venues for further discovery</li>
+                    <li>Accessible: clear labels, high contrast, required field markers</li>
+                </ul>
+
+                <h4>4.2 Algorithms</h4>
+                <p>5 pseudocode algorithms: Search, Filter, Sort, Authentication, CRUD operations</p>
+                <p>11 SQL queries: CREATE TABLE, SELECT with JOIN, LIKE search, GROUP BY counts, INSERT, UPDATE, DELETE</p>
+
+                <h4>4.3 Navigation Flow</h4>
+                <pre><code>HOME ──> BROWSE/SEARCH ──> VENUE DETAIL
+  |                              |
+  |                        (Related Venues)
+  |
+  └──> ADMIN LOGIN ──> DASHBOARD ──> ADD/EDIT/DELETE</code></pre>
+
+                <h4>4.4 Acknowledgements</h4>
+                <ul>
+                    <li>Brisbane City Council Open Data Portal — data.brisbane.qld.gov.au</li>
+                    <li>Creative Commons Attribution 4.0 International</li>
+                    <li>Opendatasoft Platform</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CRITERIA -->
+<section id="criteria">
+    <div class="container">
+        <div class="section-header">
+            <div class="tag">Assessment</div>
+            <h2>Marking Criteria</h2>
+            <p>Coverage across all 5 marking criteria (25 marks total)</p>
+        </div>
+
+        <div class="criteria-grid">
+            <div class="criteria-card">
+                <div class="score" style="color:var(--accent)">5</div>
+                <div class="name">Comprehending</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:100%; background:var(--accent)"></div></div>
+            </div>
+            <div class="criteria-card">
+                <div class="score" style="color:var(--accent-2)">7</div>
+                <div class="name">Analysing</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:100%; background:var(--accent-2)"></div></div>
+            </div>
+            <div class="criteria-card">
+                <div class="score" style="color:var(--accent-3)">6</div>
+                <div class="name">Synthesising</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:100%; background:var(--accent-3)"></div></div>
+            </div>
+            <div class="criteria-card">
+                <div class="score" style="color:var(--accent-4)">5</div>
+                <div class="name">Generating</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:100%; background:var(--accent-4)"></div></div>
+            </div>
+            <div class="criteria-card">
+                <div class="score" style="color:var(--accent-5)">2</div>
+                <div class="name">Communicating</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:100%; background:var(--accent-5)"></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    Digital Solutions IA1 Technical Proposal &mdash; Kedron State High School 2026 &mdash; BCC Events Finder
+</footer>
+
+<!-- CONTENT VIEWER MODAL -->
+<div id="content-viewer">
+    <div class="viewer-header">
+        <span class="title" id="viewer-title">Document</span>
+        <button onclick="closeViewer()">Close &times;</button>
+    </div>
+    <iframe id="viewer-frame" src=""></iframe>
+</div>
+
+<script>
+    // Toggle collapsible sections
+    function toggleSection(bar) {
+        bar.classList.toggle('open');
+        const content = bar.nextElementSibling;
+        content.classList.toggle('open');
+    }
+
+    // Content viewer
+    function openViewer(url, title) {
+        document.getElementById('viewer-title').textContent = title;
+        document.getElementById('viewer-frame').src = url;
+        document.getElementById('content-viewer').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeViewer() {
+        document.getElementById('content-viewer').style.display = 'none';
+        document.getElementById('viewer-frame').src = '';
+        document.body.style.overflow = '';
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('nav .nav-links a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            const target = document.querySelector(a.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+
+    // Active nav on scroll
+    window.addEventListener('scroll', () => {
+        const sections = ['hero', 'deliverables', 'proposal', 'criteria'];
+        const scrollY = window.scrollY + 100;
+        let current = sections[0];
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.offsetTop <= scrollY) current = id;
+        });
+        document.querySelectorAll('nav .nav-links a[href^="#"]').forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+        });
+    });
+</script>
+
+</body>
+</html>

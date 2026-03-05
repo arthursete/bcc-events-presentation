@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCC Events Finder - Wireframe Prototypes</title>
+    <style>
+        /* ============================================
+           WIREFRAME BASE STYLES
+           Low-fidelity aesthetic: grayscale + blue accents
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Wireframe page wrapper */
+        .wireframe-page {
+            max-width: 1100px;
+            margin: 0 auto 60px auto;
+            background: #fff;
+            border: 2px solid #bbb;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Page title label */
+        .page-label {
+            background: #2a6496;
+            color: #fff;
+            text-align: center;
+            padding: 14px 20px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 3px solid #1d4f73;
+        }
+
+        /* ============================================
+           ANNOTATION STICKY NOTES
+           ============================================ */
+        .annotation {
+            background: #fffbe6;
+            border: 2px dashed #e6a800;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #7a5600;
+            font-weight: 600;
+            margin: 8px 0;
+            display: inline-block;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .annotation::before {
+            content: "\1F4CC";
+            margin-right: 5px;
+        }
+
+        .annotation-inline {
+            background: #fffbe6;
+            border: 1.5px dashed #e6a800;
+            border-radius: 3px;
+            padding: 4px 8px;
+            font-size: 11px;
+            color: #7a5600;
+            font-weight: 600;
+            display: block;
+            margin-top: 6px;
+        }
+
+        .annotation-inline::before {
+            content: "\1F4CC ";
+        }
+
+        .annotation-right {
+            background: #fffbe6;
+            border: 2px dashed #e6a800;
+            border-radius: 4px;
+            padding: 6px 10px;
+            font-size: 11px;
+            color: #7a5600;
+            font-weight: 600;
+            position: absolute;
+            right: -10px;
+            z-index: 10;
+            max-width: 220px;
+            line-height: 1.3;
+        }
+
+        .annotation-right::before {
+            content: "\1F4CC ";
+        }
+
+        /* ============================================
+           NAVIGATION BAR
+           ============================================ */
+        .navbar {
+            background: #2c2c2c;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            height: 54px;
+            justify-content: space-between;
+        }
+
+        .navbar-logo {
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-logo span {
+            color: #5ba3d9;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 6px;
+        }
+
+        .navbar-links a {
+            color: #ccc;
+            text-decoration: none;
+            padding: 8px 14px;
+            font-size: 14px;
+            border-radius: 3px;
+            transition: background 0.15s;
+        }
+
+        .navbar-links a:hover,
+        .navbar-links a.active {
+            background: #444;
+            color: #fff;
+        }
+
+        /* ============================================
+           PAGE TABLE OF CONTENTS (top of file)
+           ============================================ */
+        .toc {
+            max-width: 1100px;
+            margin: 30px auto 40px auto;
+            background: #fff;
+            border: 2px solid #2a6496;
+            border-radius: 6px;
+            padding: 28px 34px;
+        }
+
+        .toc h1 {
+            font-size: 24px;
+            color: #2a6496;
+            margin-bottom: 4px;
+        }
+
+        .toc p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .toc-grid a {
+            display: block;
+            background: #f0f4f8;
+            border: 1.5px solid #cdd8e4;
+            border-radius: 4px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #2a6496;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.15s;
+        }
+
+        .toc-grid a:hover {
+            background: #dce6f0;
+        }
+
+        .toc-grid a small {
+            display: block;
+            color: #888;
+            font-weight: 400;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            background: linear-gradient(135deg, #e8eef4, #d4dde7);
+            text-align: center;
+            padding: 48px 30px 42px 30px;
+            border-bottom: 1.5px solid #c0c8d0;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 30px;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 22px;
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 560px;
+            margin: 0 auto;
+            border: 2px solid #aaa;
+            border-radius: 5px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 12px 16px;
+            font-size: 15px;
+            outline: none;
+            background: #fff;
+            color: #333;
+        }
+
+        .search-bar button {
+            background: #2a6496;
+            color: #fff;
+            border: none;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ============================================
+           FILTER BUTTONS
+           ============================================ */
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 18px 24px;
+            background: #fafafa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .filter-btn {
+            background: #fff;
+            border: 1.5px solid #bbb;
+            border-radius: 20px;
+            padding: 7px 18px;
+            font-size: 13px;
+            color: #444;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #2a6496;
+            color: #fff;
+            border-color: #2a6496;
+        }
+
+        /* ============================================
+           VENUE CARDS
+           ============================================ */
+        .cards-section {
+            padding: 28px 24px;
+        }
+
+        .cards-section h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 16px;
+        }
+
+        .venue-card {
+            border: 1.5px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            background: #fff;
+            transition: box-shadow 0.15s;
+        }
+
+        .venue-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 110px;
+            background: #d9d9d9;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 13px;
+            font-style: italic;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .card-body {
+            padding: 12px 14px;
+        }
+
+        .card-body h3 {
+            font-size: 15px;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .card-body .card-suburb {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .card-type-badge {
+            display: inline-block;
+            background: #e8eef4;
+            color: #2a6496;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 10px;
+        }
+
+        .card-link {
+            display: block;
+            text-align: center;
+            padding: 8px;
+            background: #f7f7f7;
+            color: #2a6496;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            border-top: 1px solid #ddd;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background: #2c2c2c;
+            color: #aaa;
+            padding: 20px 24px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer a {
+            color: #5ba3d9;
+            text-decoration: none;
+        }
+
+        /* ============================================
+           BROWSE PAGE LAYOUT
+           ============================================ */
+        .browse-layout {
+            display: flex;
+            min-height: 500px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: #f7f8fa;
+            border-right: 1.5px solid #ddd;
+            padding: 20px 18px;
+            flex-shrink: 0;
+        }
+
+        .sidebar h3 {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1.5px solid #ddd;
+        }
+
+        .sidebar label {
+            display: block;
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .sidebar select,
+        .sidebar input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #bbb;
+            border-radius: 3px;
+            font-size: 13px;
+            margin-bottom: 14px;
+            background: #fff;
+        }
+
+        .sidebar .checkbox-group {
+            margin-bottom: 14px;
+        }
+
+        .sidebar .checkbox-group label {
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 5px;
+        }
+
+        .results-area {
+            flex: 1;
+            padding: 20px 22px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .results-header .count {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .results-header select {
+            padding: 6px 10px;
+            border: 1.5px solid #bbb;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #ddd;
+        }
+
+        .pagination a, .pagination span {
+            display: inline-block;
+            padding: 6px 12px;
+            border: 1.5px solid #bbb;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 13px;
+            color: #444;
+        }
+
+        .pagination .active {
+            background: #2a6496;
+            color: #fff;
+            border-color: #2a6496;
+        }
+
+        /* ============================================
+           VENUE DETAIL PAGE
+           ============================================ */
+        .detail-content {
+            padding: 24px 30px;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 16px;
+        }
+
+        .breadcrumb a {
+            color: #2a6496;
+            text-decoration: none;
+        }
+
+        .detail-content h1 {
+            font-size: 26px;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .detail-info {
+            border: 1.5px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            background: #fafafa;
+        }
+
+        .detail-info table {
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .detail-info table th {
+            text-align: left;
+            padding: 6px 12px 6px 0;
+            color: #666;
+            font-weight: 600;
+            width: 120px;
+            vertical-align: top;
+        }
+
+        .detail-info table td {
+            padding: 6px 0;
+            color: #333;
+        }
+
+        .map-placeholder {
+            border: 2px dashed #aaa;
+            border-radius: 5px;
+            background: #e4e4e4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 260px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .map-placeholder .map-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #999;
+        }
+
+        .map-placeholder .coords {
+            font-family: monospace;
+            color: #555;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .related-section {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1.5px solid #ddd;
+        }
+
+        .related-section h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 14px;
+        }
+
+        /* ============================================
+           LOGIN PAGE
+           ============================================ */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 420px;
+            background: #eef1f5;
+            padding: 40px 20px;
+        }
+
+        .login-card {
+            background: #fff;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            padding: 34px 36px;
+            width: 360px;
+            text-align: center;
+        }
+
+        .login-card h2 {
+            font-size: 22px;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .login-card p {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #bbb;
+            border-radius: 4px;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #2a6496;
+            color: #fff;
+            border: none;
+            padding: 11px 28px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: #1d4f73;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: #fff;
+            color: #555;
+            border: 1.5px solid #bbb;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-danger {
+            background: #c0392b;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            font-size: 12px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .link-small {
+            display: block;
+            margin-top: 14px;
+            font-size: 13px;
+            color: #2a6496;
+            text-decoration: none;
+        }
+
+        /* ============================================
+           ADMIN DASHBOARD
+           ============================================ */
+        .admin-navbar {
+            background: #1a1a2e;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            height: 54px;
+            justify-content: space-between;
+        }
+
+        .admin-navbar .navbar-logo span {
+            color: #e6a800;
+        }
+
+        .admin-navbar .navbar-links a {
+            color: #bbb;
+        }
+
+        .admin-navbar .navbar-links a:hover,
+        .admin-navbar .navbar-links a.active {
+            background: #333;
+            color: #fff;
+        }
+
+        .admin-content {
+            padding: 24px 28px;
+        }
+
+        .admin-content h1 {
+            font-size: 22px;
+            color: #222;
+            margin-bottom: 18px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            border: 1.5px solid #ccc;
+            border-radius: 5px;
+            padding: 18px 20px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .stat-card .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2a6496;
+        }
+
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .admin-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .admin-toolbar input {
+            padding: 8px 12px;
+            border: 1.5px solid #bbb;
+            border-radius: 3px;
+            font-size: 13px;
+            width: 240px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .data-table th {
+            background: #eef1f5;
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 600;
+            color: #444;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fb;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        /* ============================================
+           ADMIN FORM PAGE
+           ============================================ */
+        .form-page {
+            padding: 24px 28px;
+            max-width: 650px;
+        }
+
+        .form-page h1 {
+            font-size: 22px;
+            color: #222;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-actions {
+            margin-top: 24px;
+            display: flex;
+            gap: 10px;
+            padding-top: 18px;
+            border-top: 1.5px solid #ddd;
+        }
+
+        /* ============================================
+           UTILITY
+           ============================================ */
+        .section-sep {
+            height: 50px;
+        }
+
+        .back-to-top {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            color: #2a6496;
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .detail-type-badge {
+            display: inline-block;
+            background: #e8eef4;
+            color: #2a6496;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     TABLE OF CONTENTS / INDEX
+     ============================================================ -->
+<div class="toc" id="top">
+    <h1>BCC Events Finder &mdash; Wireframe Prototypes</h1>
+    <p>Low-fidelity wireframes for all application pages. Click a page to jump to its wireframe.</p>
+    <div class="toc-grid">
+        <a href="#home">Home Page <small>Public landing page</small></a>
+        <a href="#browse">Browse / Search <small>Search results with filters</small></a>
+        <a href="#detail">Venue Detail <small>Individual venue view</small></a>
+        <a href="#login">Admin Login <small>Authentication page</small></a>
+        <a href="#dashboard">Admin Dashboard <small>Venue management overview</small></a>
+        <a href="#form">Add / Edit Venue <small>Admin venue form</small></a>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     PAGE 1: HOME PAGE
+     ============================================================ -->
+<div class="wireframe-page" id="home">
+    <div class="page-label">Page 1 &mdash; Home Page</div>
+
+    <!-- Annotation: Navigation -->
+    <div style="padding:10px 18px 0 18px;">
+        <div class="annotation">USABILITY: Consistent navigation bar on every page provides predictable wayfinding for users</div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-logo">BCC <span>Events Finder</span></div>
+        <div class="navbar-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#browse">Browse</a>
+            <a href="#detail">About</a>
+            <a href="#login">Admin Login</a>
+        </div>
+    </nav>
+
+    <!-- Annotation: Contrast -->
+    <div style="padding:6px 18px 0 18px;">
+        <div class="annotation">CONTRAST: Dark navigation bar against light page content creates clear visual separation and hierarchy</div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Discover Brisbane's Best Venues</h1>
+        <p>Search across 1,696 event venues in 186 suburbs throughout Brisbane</p>
+
+        <!-- Annotation: Visual Hierarchy -->
+        <div class="annotation" style="position:absolute; top:10px; right:14px; max-width:200px;">VISUAL HIERARCHY: Large heading and centered layout draw the user's eye to the main message first</div>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Search venues by name, suburb, or type...">
+            <button>Search</button>
+        </div>
+
+        <!-- Annotation: Usability -->
+        <div class="annotation-inline" style="max-width:560px; margin:10px auto 0 auto;">USABILITY: Search bar is prominently placed in the hero section for immediate, easy access &mdash; the primary user task</div>
+    </div>
+
+    <!-- Quick Filter Buttons -->
+    <div class="filter-buttons">
+        <span class="filter-btn active">All Venues</span>
+        <span class="filter-btn">Park</span>
+        <span class="filter-btn">Library</span>
+        <span class="filter-btn">Community Hall</span>
+        <span class="filter-btn">Swimming Pool</span>
+        <span class="filter-btn">Community Garden</span>
+        <span class="filter-btn">Sports Facility</span>
+        <span class="filter-btn">Cultural Centre</span>
+    </div>
+    <div style="padding:4px 18px;">
+        <div class="annotation">PROXIMITY: Related filter buttons are grouped together in a single row, making it clear they are a set of related options</div>
+    </div>
+
+    <!-- Featured Venues -->
+    <div class="cards-section">
+        <h2>Featured Venues</h2>
+        <div class="cards-grid">
+            <!-- Card 1 -->
+            <div class="venue-card">
+                <div class="card-img" style="background-image: url('venue_images/7th-brigade-park.jpg');"></div>
+                <div class="card-body">
+                    <h3>7th Brigade Park</h3>
+                    <div class="card-suburb">Chermside</div>
+                    <span class="card-type-badge">Park</span>
+                </div>
+                <a href="#detail" class="card-link">View Details &rarr;</a>
+            </div>
+            <!-- Card 2 -->
+            <div class="venue-card">
+                <div class="card-img" style="background-image: url('venue_images/acacia-ridge-hall.jpg');"></div>
+                <div class="card-body">
+                    <h3>Acacia Ridge Hall</h3>
+                    <div class="card-suburb">Acacia Ridge</div>
+                    <span class="card-type-badge">Community Hall</span>
+                </div>
+                <a href="#detail" class="card-link">View Details &rarr;</a>
+            </div>
+            <!-- Card 3 -->
+            <div class="venue-card">
+                <div class="card-img" style="background-image: url('venue_images/zillmere-library.jpg');"></div>
+                <div class="card-body">
+                    <h3>Zillmere Library</h3>
+                    <div class="card-suburb">Zillmere</div>
+                    <span class="card-type-badge">Library</span>
+                </div>
+                <a href="#detail" class="card-link">View Details &rarr;</a>
+            </div>
+            <!-- Card 4 -->
+            <div class="venue-card">
+                <div class="card-img" style="background-image: url('venue_images/acacia-ridge-leisure-centre.jpg');"></div>
+                <div class="card-body">
+                    <h3>Acacia Ridge Leisure Centre</h3>
+                    <div class="card-suburb">Acacia Ridge</div>
+                    <span class="card-type-badge">Swimming Pool</span>
+                </div>
+                <a href="#detail" class="card-link">View Details &rarr;</a>
+            </div>
+        </div>
+        <div style="margin-top:10px;">
+            <div class="annotation">REPETITION: Consistent card design (image, name, suburb, type badge, link) is repeated for every venue listing, creating a learnable pattern</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div>&copy; 2026 BCC Events Finder &mdash; Brisbane City Council Open Data</div>
+        <div><a href="#top">Back to Top</a></div>
+    </div>
+
+    <div style="padding:6px 18px 10px 18px;">
+        <div class="annotation">ACCESSIBILITY: Footer provides consistent site information and quick navigation link back to top of page</div>
+    </div>
+</div>
+
+<a href="#top" class="back-to-top">&uarr; Back to Page Index</a>
+<div class="section-sep"></div>
+
+
+<!-- ============================================================
+     PAGE 2: BROWSE / SEARCH RESULTS
+     ============================================================ -->
+<div class="wireframe-page" id="browse">
+    <div class="page-label">Page 2 &mdash; Browse / Search Results</div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-logo">BCC <span>Events Finder</span></div>
+        <div class="navbar-links">
+            <a href="#home">Home</a>
+            <a href="#browse" class="active">Browse</a>
+            <a href="#detail">About</a>
+            <a href="#login">Admin Login</a>
+        </div>
+    </nav>
+
+    <div class="browse-layout">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <h3>Filter Venues</h3>
+
+            <label for="search-input">Search</label>
+            <input type="text" id="search-input" placeholder="Venue name...">
+
+            <label for="suburb-select">Suburb</label>
+            <select id="suburb-select">
+                <option>All Suburbs (186)</option>
+                <option>Acacia Ridge</option>
+                <option>Alderley</option>
+                <option>Annerley</option>
+                <option>Ascot</option>
+                <option>Brisbane City</option>
+                <option>Chermside</option>
+                <option>Indooroopilly</option>
+                <option>St Lucia</option>
+                <option>Zillmere</option>
+            </select>
+
+            <label>Venue Type</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" checked> Park</label>
+                <label><input type="checkbox" checked> Library</label>
+                <label><input type="checkbox" checked> Community Hall</label>
+                <label><input type="checkbox" checked> Swimming Pool</label>
+                <label><input type="checkbox" checked> Community Garden</label>
+                <label><input type="checkbox" checked> Sports Facility</label>
+                <label><input type="checkbox" checked> Cultural Centre</label>
+                <label><input type="checkbox" checked> Youth Centre</label>
+                <label><input type="checkbox" checked> Senior Centre</label>
+                <label><input type="checkbox" checked> Other</label>
+            </div>
+
+            <button class="btn-primary" style="width:100%;">Apply Filters</button>
+
+            <div class="annotation-inline" style="margin-top:14px;">PROXIMITY: All filter controls are grouped together in the sidebar, making their relationship clear</div>
+            <div class="annotation-inline">ALIGNMENT: Left-aligned labels above form inputs for easy scanning and readability</div>
+        </aside>
+
+        <!-- Results Area -->
+        <div class="results-area">
+            <div class="results-header">
+                <span class="count">Showing <strong>1,696</strong> of 1,696 venues</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <label style="font-size:13px;color:#666;">Sort by:</label>
+                    <select>
+                        <option>Name (A-Z)</option>
+                        <option>Name (Z-A)</option>
+                        <option>Suburb (A-Z)</option>
+                        <option>Suburb (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-bottom:14px;">
+                <div class="annotation">USABILITY: Results count keeps user informed of how many results match their filters; sort options give user control</div>
+            </div>
+
+            <!-- Results Grid -->
+            <div class="cards-grid">
+                <div class="venue-card">
+                    <div class="card-img" style="background-image: url('venue_images/7th-brigade-park.jpg');"></div>
+                    <div class="card-body">
+                        <h3>7th Brigade Park</h3>
+                        <div class="card-suburb">Chermside</div>
+                        <span class="card-type-badge">Park</span>
+                    </div>
+                    <a href="#detail" class="card-link">View Details &rarr;</a>
+                </div>
+                <div class="venue-card">
+                    <div class="card-img" style="background-image: url('venue_images/acacia-ridge-hall.jpg');"></div>
+                    <div class="card-body">
+                        <h3>Acacia Ridge Hall</h3>
+                        <div class="card-suburb">Acacia Ridge</div>
+                        <span class="card-type-badge">Community Hall</span>
+                    </div>
+                    <a href="#detail" class="card-link">View Details &rarr;</a>
+                </div>
+                <div class="venue-card">
+                    <div class="card-img" style="background-image: url('venue_images/zillmere-library.jpg');"></div>
+                    <div class="card-body">
+                        <h3>Zillmere Library</h3>
+                        <div class="card-suburb">Zillmere</div>
+                        <span class="card-type-badge">Library</span>
+                    </div>
+                    <a href="#detail" class="card-link">View Details &rarr;</a>
+                </div>
+                <div class="venue-card">
+                    <div class="card-img" style="background-image: url('venue_images/acacia-ridge-leisure-centre.jpg');"></div>
+                    <div class="card-body">
+                        <h3>Acacia Ridge Leisure Centre</h3>
+                        <div class="card-suburb">Acacia Ridge</div>
+                        <span class="card-type-badge">Swimming Pool</span>
+                    </div>
+                    <a href="#detail" class="card-link">View Details &rarr;</a>
+                </div>
+                <div class="venue-card">
+                    <div class="card-img" style="background-image: url('venue_images/grow-for-life-garden.jpg');"></div>
+                    <div class="card-body">
+                        <h3>Grow for Life Community Garden</h3>
+                        <div class="card-suburb">Northgate</div>
+                        <span class="card-type-badge">Community Garden</span>
+                    </div>
+                    <a href="#detail" class="card-link">View Details &rarr;</a>
+                </div>
+                <div class="venue-card">
+                    <div class="card-img" style="background-image: url('venue_images/stones-corner-library.jpg');"></div>
+                    <div class="card-body">
+                        <h3>Stones Corner Library</h3>
+                        <div class="card-suburb">Stones Corner</div>
+                        <span class="card-type-badge">Library</span>
+                    </div>
+                    <a href="#detail" class="card-link">View Details &rarr;</a>
+                </div>
+            </div>
+
+            <div style="margin-top:8px;">
+                <div class="annotation">REPETITION: Every venue card follows the same structure &mdash; image, title, suburb, type badge, detail link &mdash; for consistency</div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <span>&laquo; Prev</span>
+                <span class="active">1</span>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <span>...</span>
+                <a href="#">85</a>
+                <a href="#">Next &raquo;</a>
+            </div>
+            <div style="text-align:center; margin-top:6px;">
+                <div class="annotation" style="display:inline-block;">USABILITY: Pagination breaks 1,696 results into manageable pages, preventing information overload</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div>&copy; 2026 BCC Events Finder &mdash; Brisbane City Council Open Data</div>
+        <div><a href="#top">Back to Top</a></div>
+    </div>
+</div>
+
+<a href="#top" class="back-to-top">&uarr; Back to Page Index</a>
+<div class="section-sep"></div>
+
+
+<!-- ============================================================
+     PAGE 3: VENUE DETAIL
+     ============================================================ -->
+<div class="wireframe-page" id="detail">
+    <div class="page-label">Page 3 &mdash; Venue Detail</div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-logo">BCC <span>Events Finder</span></div>
+        <div class="navbar-links">
+            <a href="#home">Home</a>
+            <a href="#browse">Browse</a>
+            <a href="#detail">About</a>
+            <a href="#login">Admin Login</a>
+        </div>
+    </nav>
+
+    <div class="detail-content">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="#home">Home</a> &rsaquo; <a href="#browse">Browse Venues</a> &rsaquo; 7th Brigade Park
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <div class="annotation">USABILITY: Breadcrumb navigation shows the user where they are in the site hierarchy and provides easy backtracking</div>
+        </div>
+
+        <span class="detail-type-badge">Park</span>
+        <h1>7th Brigade Park</h1>
+
+        <div style="margin-bottom:6px;">
+            <div class="annotation">VISUAL HIERARCHY: Venue name uses largest heading size on the page, immediately drawing attention to the most important information</div>
+        </div>
+
+        <!-- Two-column detail layout -->
+        <div class="detail-grid">
+            <!-- Info Panel -->
+            <div class="detail-info">
+                <h3 style="font-size:16px; margin-bottom:12px; color:#333;">Venue Information</h3>
+                <table>
+                    <tr>
+                        <th>Address</th>
+                        <td>Murphy Road, Chermside</td>
+                    </tr>
+                    <tr>
+                        <th>Suburb</th>
+                        <td>Chermside</td>
+                    </tr>
+                    <tr>
+                        <th>Venue Type</th>
+                        <td>Park</td>
+                    </tr>
+                    <tr>
+                        <th>Latitude</th>
+                        <td>-27.3794</td>
+                    </tr>
+                    <tr>
+                        <th>Longitude</th>
+                        <td>153.0303</td>
+                    </tr>
+                </table>
+                <div class="annotation-inline" style="margin-top:12px;">ALIGNMENT: Left-aligned table labels with consistent column widths for easy reading</div>
+            </div>
+
+            <!-- Map -->
+            <div class="map-placeholder" style="border:none; padding:0; background:none; min-height:auto;">
+                <img src="venue_images/7th-brigade-park-map.png" alt="Map showing 7th Brigade Park location" style="width:100%; border-radius:5px; border:1px solid #ccc;">
+            </div>
+        </div>
+
+        <div style="margin-top:10px;">
+            <div class="annotation">PROXIMITY: Venue details and map are placed side by side, grouping related location information together</div>
+        </div>
+
+        <!-- Related Venues -->
+        <div class="related-section">
+            <h2>Other Venues in Chermside</h2>
+            <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="venue-card">
+                    <div class="card-img" style="height:80px; background-image: url('venue_images/chermside-library.jpg');"></div>
+                    <div class="card-body">
+                        <h3>Chermside Library</h3>
+                        <div class="card-suburb">Chermside</div>
+                        <span class="card-type-badge">Library</span>
+                    </div>
+                </div>
+                <div class="venue-card">
+                    <div class="card-img" style="height:80px; background-image: url('venue_images/chermside-aquatic-centre.jpg');"></div>
+                    <div class="card-body">
+                        <h3>Chermside Aquatic Centre</h3>
+                        <div class="card-suburb">Chermside</div>
+                        <span class="card-type-badge">Swimming Pool</span>
+                    </div>
+                </div>
+                <div class="venue-card">
+                    <div class="card-img" style="height:80px; background-image: url('venue_images/chermside-community-hall.jpg');"></div>
+                    <div class="card-body">
+                        <h3>Chermside Community Hall</h3>
+                        <div class="card-suburb">Chermside</div>
+                        <span class="card-type-badge">Community Hall</span>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:8px;">
+                <div class="annotation">USABILITY: Related venues in the same suburb help users discover nearby options without returning to search</div>
+            </div>
+        </div>
+
+        <div style="margin-top:20px;">
+            <a href="#browse" style="color:#2a6496; font-weight:600; text-decoration:none;">&larr; Back to Browse Results</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div>&copy; 2026 BCC Events Finder &mdash; Brisbane City Council Open Data</div>
+        <div><a href="#top">Back to Top</a></div>
+    </div>
+</div>
+
+<a href="#top" class="back-to-top">&uarr; Back to Page Index</a>
+<div class="section-sep"></div>
+
+
+<!-- ============================================================
+     PAGE 4: ADMIN LOGIN
+     ============================================================ -->
+<div class="wireframe-page" id="login">
+    <div class="page-label">Page 4 &mdash; Admin Login</div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-logo">BCC <span>Events Finder</span></div>
+        <div class="navbar-links">
+            <a href="#home">Home</a>
+            <a href="#browse">Browse</a>
+            <a href="#detail">About</a>
+            <a href="#login" class="active">Admin Login</a>
+        </div>
+    </nav>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h2>Admin Login</h2>
+            <p>Enter your credentials to manage venues</p>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+
+            <div style="margin-top:6px; margin-bottom:16px;">
+                <div class="annotation-inline">ALIGNMENT: Form labels are left-aligned above inputs for fast vertical scanning</div>
+            </div>
+
+            <button class="btn-primary" style="width:100%;">Log In</button>
+            <a href="#" class="link-small">Forgot password?</a>
+
+            <div style="margin-top:18px;">
+                <div class="annotation-inline">CONTRAST: Blue login button against white background clearly identifies the primary action</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding:10px 18px;">
+        <div class="annotation">VISUAL HIERARCHY: Centered card with ample whitespace focuses user attention on the single task of logging in</div>
+        <div class="annotation" style="margin-left:8px;">ACCESSIBILITY: Clear labels on every input field ensure screen readers can identify form controls; high contrast text on all elements</div>
+    </div>
+
+    <div class="footer">
+        <div>&copy; 2026 BCC Events Finder &mdash; Brisbane City Council Open Data</div>
+        <div><a href="#top">Back to Top</a></div>
+    </div>
+</div>
+
+<a href="#top" class="back-to-top">&uarr; Back to Page Index</a>
+<div class="section-sep"></div>
+
+
+<!-- ============================================================
+     PAGE 5: ADMIN DASHBOARD
+     ============================================================ -->
+<div class="wireframe-page" id="dashboard">
+    <div class="page-label">Page 5 &mdash; Admin Dashboard</div>
+
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <div class="navbar-logo">BCC <span>Events Finder</span> &mdash; Admin</div>
+        <div class="navbar-links">
+            <a href="#dashboard" class="active">Dashboard</a>
+            <a href="#form">Manage Venues</a>
+            <a href="#home">Logout</a>
+        </div>
+    </nav>
+
+    <div style="padding:8px 18px 0 18px;">
+        <div class="annotation">CONTRAST: Admin area uses a distinctly different dark navy navigation bar to differentiate it from the public-facing pages</div>
+    </div>
+
+    <div class="admin-content">
+        <h1>Dashboard Overview</h1>
+
+        <!-- Stats Cards -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value">1,696</div>
+                <div class="stat-label">Total Venues</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">186</div>
+                <div class="stat-label">Suburbs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">10</div>
+                <div class="stat-label">Venue Types</div>
+            </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <div class="annotation">REPETITION: Stat cards use identical structure (large number, label underneath) providing a consistent, scannable summary row</div>
+            <div class="annotation" style="margin-left:8px;">PROXIMITY: The three statistics are grouped closely together, signalling they are related summary metrics</div>
+        </div>
+
+        <!-- Venue Table -->
+        <div class="admin-toolbar">
+            <button class="btn-primary" onclick="document.getElementById('form').scrollIntoView();">+ Add New Venue</button>
+            <input type="text" placeholder="Search venues by name or suburb...">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <div class="annotation">USABILITY: "Add New Venue" button is prominently placed above the table; search input lets admin quickly find specific records</div>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Venue Name</th>
+                    <th>Suburb</th>
+                    <th>Type</th>
+                    <th style="width:140px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>7th Brigade Park</td>
+                    <td>Chermside</td>
+                    <td>Park</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-primary btn-sm">Edit</button>
+                            <button class="btn-danger btn-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Acacia Ridge Hall</td>
+                    <td>Acacia Ridge</td>
+                    <td>Community Hall</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-primary btn-sm">Edit</button>
+                            <button class="btn-danger btn-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zillmere Library</td>
+                    <td>Zillmere</td>
+                    <td>Library</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-primary btn-sm">Edit</button>
+                            <button class="btn-danger btn-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Acacia Ridge Leisure Centre</td>
+                    <td>Acacia Ridge</td>
+                    <td>Swimming Pool</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-primary btn-sm">Edit</button>
+                            <button class="btn-danger btn-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Grow for Life Community Garden</td>
+                    <td>Northgate</td>
+                    <td>Community Garden</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-primary btn-sm">Edit</button>
+                            <button class="btn-danger btn-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Stones Corner Library</td>
+                    <td>Stones Corner</td>
+                    <td>Library</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-primary btn-sm">Edit</button>
+                            <button class="btn-danger btn-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Brisbane City Hall</td>
+                    <td>Brisbane City</td>
+                    <td>Cultural Centre</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-primary btn-sm">Edit</button>
+                            <button class="btn-danger btn-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top:10px;">
+            <div class="annotation">ALIGNMENT: Table columns are consistently aligned, with left-aligned text for readability; Actions column has fixed width</div>
+            <div class="annotation" style="margin-left:8px;">CONTRAST: Red delete button contrasts with blue edit button to signify destructive vs. safe actions</div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" style="margin-top:16px;">
+            <span class="active">1</span>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <span>...</span>
+            <a href="#">85</a>
+            <a href="#">Next &raquo;</a>
+        </div>
+    </div>
+
+    <div class="footer" style="background:#1a1a2e;">
+        <div>&copy; 2026 BCC Events Finder &mdash; Admin Panel</div>
+        <div><a href="#top" style="color:#e6a800;">Back to Top</a></div>
+    </div>
+</div>
+
+<a href="#top" class="back-to-top">&uarr; Back to Page Index</a>
+<div class="section-sep"></div>
+
+
+<!-- ============================================================
+     PAGE 6: ADMIN ADD / EDIT VENUE FORM
+     ============================================================ -->
+<div class="wireframe-page" id="form">
+    <div class="page-label">Page 6 &mdash; Add / Edit Venue</div>
+
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <div class="navbar-logo">BCC <span>Events Finder</span> &mdash; Admin</div>
+        <div class="navbar-links">
+            <a href="#dashboard">Dashboard</a>
+            <a href="#form" class="active">Manage Venues</a>
+            <a href="#home">Logout</a>
+        </div>
+    </nav>
+
+    <div class="form-page">
+        <div class="breadcrumb">
+            <a href="#dashboard">Dashboard</a> &rsaquo; Add New Venue
+        </div>
+
+        <h1>Add New Venue</h1>
+
+        <div style="margin-bottom:14px;">
+            <div class="annotation">VISUAL HIERARCHY: Page heading clearly identifies the current task; breadcrumb provides context within the admin section</div>
+        </div>
+
+        <!-- Venue Name -->
+        <div class="form-group">
+            <label for="venue-name">Venue Name *</label>
+            <input type="text" id="venue-name" placeholder="e.g. 7th Brigade Park">
+        </div>
+
+        <!-- Venue Address -->
+        <div class="form-group">
+            <label for="venue-address">Venue Address *</label>
+            <input type="text" id="venue-address" placeholder="e.g. Murphy Road, Chermside">
+        </div>
+
+        <!-- Suburb & Type Row -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="venue-suburb">Suburb *</label>
+                <select id="venue-suburb">
+                    <option value="">-- Select Suburb --</option>
+                    <option>Acacia Ridge</option>
+                    <option>Alderley</option>
+                    <option>Annerley</option>
+                    <option>Ascot</option>
+                    <option>Brisbane City</option>
+                    <option>Chermside</option>
+                    <option>Indooroopilly</option>
+                    <option>Northgate</option>
+                    <option>St Lucia</option>
+                    <option>Stones Corner</option>
+                    <option>Zillmere</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Venue Type * (select all that apply)</label>
+                <div style="border:1.5px solid #bbb; border-radius:4px; padding:10px; background:#fff; max-height:140px; overflow-y:auto;">
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:4px; font-weight:400;">
+                        <input type="checkbox"> Park
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:4px; font-weight:400;">
+                        <input type="checkbox"> Library
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:4px; font-weight:400;">
+                        <input type="checkbox"> Community Hall
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:4px; font-weight:400;">
+                        <input type="checkbox"> Swimming Pool
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:4px; font-weight:400;">
+                        <input type="checkbox"> Community Garden
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:4px; font-weight:400;">
+                        <input type="checkbox"> Sports Facility
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:4px; font-weight:400;">
+                        <input type="checkbox"> Cultural Centre
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:4px; font-weight:400;">
+                        <input type="checkbox"> Youth Centre
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:4px; font-weight:400;">
+                        <input type="checkbox"> Senior Centre
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:400;">
+                        <input type="checkbox"> Other
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <div class="annotation">PROXIMITY: Suburb and Venue Type fields are placed side by side as they both relate to venue classification</div>
+            <div class="annotation" style="margin-left:8px;">ALIGNMENT: Two-column form row keeps related fields aligned and reduces vertical scrolling</div>
+        </div>
+
+        <!-- Lat/Long Row -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="venue-lat">Latitude *</label>
+                <input type="text" id="venue-lat" placeholder="e.g. -27.3794">
+            </div>
+            <div class="form-group">
+                <label for="venue-long">Longitude *</label>
+                <input type="text" id="venue-long" placeholder="e.g. 153.0303">
+            </div>
+        </div>
+
+        <div style="margin-bottom:8px;">
+            <div class="annotation">USABILITY: Placeholder text shows example values (latitude and longitude format) to guide correct data entry</div>
+        </div>
+
+        <!-- Required field note -->
+        <p style="font-size:12px; color:#888; margin-top:4px;">* Required fields</p>
+
+        <div style="margin-bottom:8px;">
+            <div class="annotation">ACCESSIBILITY: Required fields are marked with asterisks (*) and a legend is provided; clear labels on every field support screen reader users</div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button class="btn-primary">Save Venue</button>
+            <a href="#dashboard" class="btn-secondary">Cancel</a>
+        </div>
+
+        <div style="margin-top:10px;">
+            <div class="annotation">CONTRAST: Primary "Save" button uses bold blue fill; secondary "Cancel" uses outlined style to differentiate action importance</div>
+            <div class="annotation" style="margin-left:8px;">USABILITY: Cancel button returns admin to the dashboard without saving, preventing accidental data entry</div>
+        </div>
+    </div>
+
+    <div class="footer" style="background:#1a1a2e;">
+        <div>&copy; 2026 BCC Events Finder &mdash; Admin Panel</div>
+        <div><a href="#top" style="color:#e6a800;">Back to Top</a></div>
+    </div>
+</div>
+
+<a href="#top" class="back-to-top">&uarr; Back to Page Index</a>
+
+<div style="text-align:center; padding:30px; color:#888; font-size:13px;">
+    &mdash; End of Wireframe Prototypes &mdash;
+</div>
+
+</body>
+</html>
