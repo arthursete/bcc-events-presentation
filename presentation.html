@@ -1662,6 +1662,11 @@
 
         showSlide(1);
 
+        // ─── EMBED MODE: hide nav bar when loaded inside presenter iframe ───
+        if (new URLSearchParams(window.location.search).get('embed') === '1') {
+            document.getElementById('navBar').style.display = 'none';
+        }
+
         // ─── BROADCAST CHANNEL SYNC ───
         const channel = new BroadcastChannel('presentation-sync');
 
@@ -1680,6 +1685,11 @@
                 channel.postMessage({ type: 'slide-change', slide: currentSlide });
             }
         };
+
+        // Hide nav bar if loaded as embed (inside presenter view iframe)
+        if (new URLSearchParams(window.location.search).get('embed') === '1') {
+            document.getElementById('navBar').style.display = 'none';
+        }
 
         // Re-init to trigger broadcast
         showSlide(1);
@@ -1769,6 +1779,8 @@ body{background:#1a1a2e;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-seri
 .script{font-size:1.35rem;line-height:2;color:#f1f5f9;white-space:pre-wrap}
 .next-label{margin-top:30px;padding-top:16px;border-top:1px solid #334155;font-size:0.95rem;color:#64748b}
 .next-title{color:#94a3b8;font-size:1rem;font-weight:600}
+.slide-preview{width:100%;height:280px;overflow:hidden;border:1px solid #334155;border-radius:8px;margin-bottom:16px;position:relative}
+.slide-preview iframe{width:222%;height:222%;transform:scale(0.45);transform-origin:top left;border:none;pointer-events:none}
 </style></head><body>
 <div class="header">
 <span class="slide-num" id="p-slide-num"></span>
@@ -1776,6 +1788,9 @@ body{background:#1a1a2e;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-seri
 <button onclick="prev()">&#9664; Prev</button>
 <button onclick="next()">Next &#9654;</button>
 </div>
+</div>
+<div class="slide-preview">
+<iframe src="presentation.html?embed=1" id="p-iframe"></iframe>
 </div>
 <div class="title" id="p-title"></div>
 <div class="script" id="p-script"></div>
